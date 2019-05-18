@@ -2,11 +2,24 @@ package dtos
 
 class Person(val name : String) {
 
-    var ratings: MutableList<PersonTeaRating> = mutableListOf()
+    private var teaRatings: MutableList<PersonTeaRating> = mutableListOf()
 
-    override fun toString(): String {
-        return "Person(name='$name', ratings=$ratings)"
+    fun addTeaRating(personTeaRating: PersonTeaRating) {
+        if(!teaRatings.contains(personTeaRating)){
+            teaRatings.add(personTeaRating)
+        }
+        personTeaRating.setPerson(this)
     }
 
+    fun removeTeaRating(personTeaRating: PersonTeaRating) {
+        teaRatings.remove(personTeaRating)
+    }
 
+    fun getTeaRatings(): MutableList<PersonTeaRating> {
+        return teaRatings
+    }
+
+    override fun toString(): String {
+        return "Person(name='$name', teaRatings=$teaRatings)"
+    }
 }
