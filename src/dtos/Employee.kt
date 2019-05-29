@@ -16,4 +16,8 @@ class Employee(val name: String, val id: Int){
         return "Employee(name='$name', id=$id, " +
                 "discounts=${discounts.joinToString { it.code }}.)"
     }
+
+    fun getDiscounts(): MutableList<Discount> {
+        return discounts
+    }
 }
