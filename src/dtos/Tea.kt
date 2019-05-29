@@ -1,35 +1,44 @@
 package dtos
 
 import java.lang.Exception
+import java.lang.IllegalStateException
 
 class Tea(val name : String) {
-    private var ratings: MutableList<PersonTeaRating> = mutableListOf()
+
+    private var ratings: MutableSet<PersonTeaRating> = mutableSetOf()
 
     fun addRating(personTeaRating: PersonTeaRating) {
-        if(!ratings.contains(personTeaRating)){
-            ratings.add(personTeaRating)
+        if(personTeaRating.getTea() != this){
+            throw IllegalStateException("This rating belongs to different Tea!")
         }
-        personTeaRating.setTea(this)
+        ratings.add(personTeaRating)
     }
 
-    fun removeRating(personTeaRating: PersonTeaRating) {
-        ratings.remove(personTeaRating)
-    }
-
-    fun getRatings(): MutableList<PersonTeaRating> {
+    fun getRatings(): MutableSet<PersonTeaRating> {
         return ratings
+    }
+
+    override fun toString(): String {
+        return "Tea(name='$name'," +
+                " ratings=$ratings"
     }
 
     private var brewMethods = mutableListOf<BrewMethod>()
 
-    private companion object {
+    internal companion object {
         private var allBrewMethods : MutableSet<BrewMethod> = mutableSetOf()
+
+        fun delete(tea: Tea){
+            allBrewMethods.removeAll(tea.brewMethods)
+            tea.brewMethods.forEach { method -> method.tea = null }
+            tea.brewMethods = emptyList<BrewMethod>().toMutableList()
+        }
     }
 
     fun addBrewMethod(brewMethod: BrewMethod) {
         if(!brewMethods.contains(brewMethod)){
             if(allBrewMethods.contains(brewMethod)){
-                throw Exception("This Brew method is already connected with a tea")
+                throw Exception("This Brew method is already connected with some Tea")
             }
 
             brewMethods.add(brewMethod)
@@ -41,11 +50,7 @@ class Tea(val name : String) {
         return brewMethods
     }
 
-    override fun toString(): String {
-        return "Tea(name='$name'," +
-                " ratings=$ratings," +
-                " brewMethods=$brewMethods," +
-                " allBrewMethods=$allBrewMethods)"
+    fun removeRating(personTeaRating: PersonTeaRating) {
+        ratings.remove(personTeaRating)
     }
-
 }

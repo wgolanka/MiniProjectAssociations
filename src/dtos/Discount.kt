@@ -4,17 +4,9 @@ import java.lang.Exception
 
 class Discount(val code : String) {
 
-    private var employees  = mutableListOf<Employee>()
-
     private var employeesQualifier = mutableMapOf<Int, Employee>()
 
     fun addEmployee(employee: Employee){
-        if(!employees.contains(employee)){
-            employees.add(employee)
-        }
-    }
-
-    fun addEmployeeQualifier(employee: Employee){
         if(!employeesQualifier.containsKey(employee.id)){
             employeesQualifier[employee.id] = employee
 
@@ -31,7 +23,6 @@ class Discount(val code : String) {
 
     override fun toString(): String {
         return "Discount(code='$code', " +
-                "employees=${employees.joinToString { "id: "  + it.id.toString() + " and name: " + it.name }}," +
                 " employeesQualifier=$employeesQualifier)"
     }
 }

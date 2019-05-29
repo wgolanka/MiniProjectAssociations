@@ -4,14 +4,15 @@ class Accessory(val id: Int) {
 
     private var company: Company? = null
 
-    fun setCompany(companyToSet: Company){
-        if(company == null){
-            company = companyToSet
-        }else{
-            company!!.removeAccessory(this)
-            company = null
-            companyToSet.addAccessory(this)
+    fun setCompany(newCompany: Company){
+        if(company == newCompany){
+            return
         }
+        if(company != null){
+            company!!.removeAccessory(this)
+        }
+        company = newCompany
+        newCompany.addAccessory(this)
     }
 
     fun getCompany(): Company? {

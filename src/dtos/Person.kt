@@ -1,25 +1,28 @@
 package dtos
 
+import java.lang.IllegalStateException
+
 class Person(val name : String) {
 
-    private var teaRatings: MutableList<PersonTeaRating> = mutableListOf()
+    private var teaRatings: MutableSet<PersonTeaRating> = mutableSetOf()
 
     fun addTeaRating(personTeaRating: PersonTeaRating) {
-        if(!teaRatings.contains(personTeaRating)){
-            teaRatings.add(personTeaRating)
+        if(personTeaRating.getPerson() != this) {
+            throw IllegalStateException("This rating belongs to different Person!")
         }
-        personTeaRating.setPerson(this)
+        teaRatings.add(personTeaRating)
+
     }
 
-    fun removeTeaRating(personTeaRating: PersonTeaRating) {
-        teaRatings.remove(personTeaRating)
-    }
-
-    fun getTeaRatings(): MutableList<PersonTeaRating> {
+    fun getTeaRatings(): MutableSet<PersonTeaRating> {
         return teaRatings
     }
 
     override fun toString(): String {
         return "Person(name='$name', teaRatings=$teaRatings)"
+    }
+
+    fun removeRating(personTeaRating: PersonTeaRating) { // test what happens when no rating
+        teaRatings.remove(personTeaRating)
     }
 }

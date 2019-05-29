@@ -4,42 +4,41 @@ import java.time.LocalDate
 
 class PersonTeaRating(val rate: Int, val date: LocalDate, personRating: Person, teaRating: Tea) {
 
-    private var person: Person? = personRating
-    private var tea: Tea? = teaRating
+    private var person: Person? = null
+    private var tea: Tea? = null
 
     init {
-        if(person != null && tea != null){
-            setPerson(person!!)
-            setTea(tea!!)
-        }
+        //no need to check null as null value can not be passed to constructor or method
+        setPerson(personRating)
+        setTea(teaRating)
     }
 
-    fun setPerson(personToSet: Person){
-        if(person == null){
-            person = personToSet
-        }else{
-            person!!.removeTeaRating(this)
-            person = null
-            personToSet.addTeaRating(this)
-        }
+    private fun setPerson(personToSet: Person){
+        person = personToSet
+        personToSet.addTeaRating(this)
     }
 
-    fun setTea(teaToSet : Tea){
-        if(tea == null){
-            tea = teaToSet
-        }else{
-            tea!!.removeRating(this)
-            tea = null
-            teaToSet.addRating(this)
-        }
+    private fun setTea(teaToSet: Tea){
+        tea = teaToSet
+        teaToSet.addRating(this)
     }
 
     override fun toString(): String {
         return "PersonTeaRating(rate=$rate, date=$date, person=${person?.name}, tea=${tea?.name})"
     }
 
-    fun overrideRatingRelation(person: Person, tea: Tea) {
-        person.addTeaRating(this )
-        tea.addRating(this)
+    fun getPerson(): Person? {
+        return person
+    }
+
+    fun getTea(): Tea? {
+        return tea
+    }
+
+    fun deleteRating() {
+        person?.removeRating(this)
+        tea?.removeRating(this)
+        person = null
+        tea = null
     }
 }

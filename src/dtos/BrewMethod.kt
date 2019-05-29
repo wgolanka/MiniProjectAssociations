@@ -2,7 +2,8 @@ package dtos
 
 import java.lang.Exception
 
-class BrewMethod private constructor(var name : String, var tea: Tea){
+class BrewMethod private constructor(var name : String?, var tea: Tea?){
+
     companion object {
         fun create(brewMethodName: String, brewMethodTea: Tea?): BrewMethod {
             if(brewMethodTea == null){
@@ -16,6 +17,6 @@ class BrewMethod private constructor(var name : String, var tea: Tea){
     }
 
     override fun toString(): String {
-        return "BrewMethod(name='$name', tea=${tea.name})"
+        return "BrewMethod(name='$name', tea=${tea?.name})"
     }
 }
